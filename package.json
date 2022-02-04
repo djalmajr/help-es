@@ -40,7 +40,7 @@
     "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts dist",
     "prettier:check": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --write src/**/*.{ts,tsx}",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags",
     "test": "exit 0",
     "version": "npm run build"
   },
