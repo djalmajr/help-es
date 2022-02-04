@@ -1,0 +1,51 @@
+{
+  "name": "@djalmajr/help-es",
+  "version": "0.0.1",
+  "author": "Djalma Jr. <djalmajr@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "main": "dist/index.js",
+  "module": "dist/index.m.js",
+  "types": "dist/index.d.ts",
+  "homepage": "https://gitlab.com:sdconecta/sdconecta-utils#README",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com:sdconecta/sdconecta-utils.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com:sdconecta/sdconecta-utils/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.m.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*/*.d.ts",
+      "browser": "./dist/*/*.m.js",
+      "import": "./dist/*/*.mjs",
+      "require": "./dist/*/*.js"
+    }
+  },
+  "scripts": {
+    "build": "node ./scripts/build.mjs minify=true && npm run build:types",
+    "build:dev": "node ./scripts/build.mjs watch=true",
+    "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts dist",
+    "prettier:check": "prettier --check src/**/*.{ts,tsx}",
+    "prettier:fix": "prettier --write src/**/*.{ts,tsx}",
+    "postversion": "git push && git push --tags && npm publish",
+    "version": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "esbuild": "^0.13.8",
+    "esbuild-plugin-glob": "^1.0.3",
+    "eslint": "^8.0.1",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.4"
+  }
+}
