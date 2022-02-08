@@ -1,5 +1,5 @@
 import { curry } from './curry';
-import { isObj } from './isObj';
+import { isObject } from './isObject';
 import { Spread } from './types';
 
 const getCtor = (v: any) => v.constructor;
@@ -11,7 +11,7 @@ export interface MergeFn {
 
 export const merge = curry((target: any, source: any) => {
   for (const [key, val] of Object.entries(source)) {
-    if (isObj(val)) {
+    if (isObject(val)) {
       if (target[key] === void 0 || getCtor(target[key]) !== getCtor(val)) {
         target[key] = new (val as any).constructor();
       }

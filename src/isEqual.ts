@@ -1,12 +1,11 @@
 import { curry } from './curry';
-import { isObj } from './isObj';
+import { isObject } from './isObject';
 import { size } from './size';
-import { Obj } from './types';
 
 const { keys } = Object;
 
-export const isEqual = curry(<T = unknown>(source: T, target: T): boolean => {
-  if (!isObj(source) || !isObj(target)) {
+export const isEqual = curry((source: object, target: object): boolean => {
+  if (!isObject(source) || !isObject(target)) {
     return source === target;
   }
 
@@ -14,11 +13,11 @@ export const isEqual = curry(<T = unknown>(source: T, target: T): boolean => {
     return false;
   }
 
-  const src = source as Obj;
-  const tgt = target as Obj;
+  const src = source as any;
+  const tgt = target as any;
 
   return keys(src).every((key: string): boolean => {
-    if (isObj(src[key]) && isObj(tgt[key])) {
+    if (isObject(src[key]) && isObject(tgt[key])) {
       return isEqual(src[key], tgt[key]);
     }
 

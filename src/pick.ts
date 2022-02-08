@@ -1,17 +1,21 @@
 import { curry } from './curry';
-import { Obj } from './types';
+
+export interface PickFn {
+  (a: string | string[]): <B extends object>(b: B) => Partial<B>;
+  <B extends object>(a: string | string[], b: B): Partial<B>;
+}
 
 /**
  * TODO: adicionar documentação
  */
-export const pick = curry(function <T extends Obj>(path: string | string[], obj: T): T {
+export const pick = curry((path: string | string[], obj: any) => {
   const keys = ([] as string[]).concat(path);
 
   return keys.reduce(function (res, key) {
     if (obj.hasOwnProperty(key)) {
-      (res as Obj)[key] = obj[key];
+      res[key] = obj[key];
     }
 
     return res;
-  }, {} as T);
-});
+  }, {} as any);
+}) as PickFn;

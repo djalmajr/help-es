@@ -1,19 +1,19 @@
 import { copy } from './copy';
 import { curry } from './curry';
-import { Fn, Obj, ValueOf } from './types';
 
-type Value<T extends Obj> = ValueOf<T> | Fn<ValueOf<T>, ValueOf<T>>;
+interface SetFn {
+  (path: string | string[]): <B extends object>(value: unknown) => (source: B) => B;
+  (path: string | string[]): <B extends object>(value: unknown, source: B) => B;
+  <B extends object>(path: string | string[], value: unknown): (source: B) => B;
+  <B extends object>(path: string | string[], value: unknown, source: B): B;
+}
 
 /**
  * https://github.com/fwilkerson/clean-set
  *
  * TODO: adicionar documentação
  */
-export const set = curry(function <T extends Obj, V = Value<T>>(
-  path: string | string[],
-  value: V,
-  source: T,
-): T {
+export const set = curry((path: string | string[], value: unknown, source: any) => {
   (path as string).split && (path = (path as string).split('.'));
 
   let val = value as any;
@@ -26,4 +26,4 @@ export const set = curry(function <T extends Obj, V = Value<T>>(
   }
 
   return next;
-});
+}) as SetFn;

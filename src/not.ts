@@ -1,8 +1,14 @@
+import { isFn } from './isFn';
 import { Fn } from './types';
+
+interface NotFn {
+  <T extends unknown[], R extends unknown>(a: Fn<T, R>): Fn<T, boolean>;
+  (a: unknown): boolean;
+}
 
 /**
  * TODO: adicionar documentação
  */
-export function not<T extends any[], R>(value: unknown | Fn<T, R>): boolean | Fn<T, boolean> {
-  return typeof value === 'function' ? (...args: T) => !value(...args) : !value;
-}
+export const not = ((val: any) => {
+  return isFn(val) ? (...a: unknown[]) => !val(...a) : !val;
+}) as NotFn;

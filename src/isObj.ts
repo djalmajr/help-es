@@ -1,3 +1,6 @@
-export function isObj(a: unknown): a is object {
-  return a !== null && typeof a === 'object';
+import { isArr } from './isArr';
+import { isObject } from './isObject';
+
+export function isObj(a: unknown): a is Record<string, unknown> {
+  return isObject(a) && !isArr(a);
 }

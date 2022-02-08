@@ -1,13 +1,14 @@
 import { curry } from './curry';
-import { pick } from './pick';
-import { Obj } from './types';
+import { diff } from './diff';
+import { pick, PickFn } from './pick';
+
+interface OmitFn extends PickFn {}
 
 /**
  * TODO: adicionar documentação
  */
-export const omit = curry(function <T extends Obj>(path: string | string[], obj: T): T {
+export const omit = curry((path: string | string[], obj: any) => {
   const arr = ([] as string[]).concat(path);
-  const keys = Object.keys(obj).filter((k) => !arr.includes(k));
 
-  return pick(keys, obj);
-});
+  return pick(diff(Object.keys(obj), arr), obj);
+}) as OmitFn;

@@ -1,9 +1,14 @@
 import { curry } from './curry';
 
+interface GroupByEveryNFn {
+  (a: number): <B extends unknown[]>(b: B) => B[];
+  <B extends unknown[]>(a: number, b: B): B[];
+}
+
 /**
  * TODO: adicionar documentação
  */
-export const groupByEveryN = curry(<T>(num: number, items: T[]): T[][] => {
+export const groupByEveryN = curry((num: number, items: unknown[]): unknown[][] => {
   const res = [];
   const arr = [...items];
 
@@ -12,4 +17,4 @@ export const groupByEveryN = curry(<T>(num: number, items: T[]): T[][] => {
   }
 
   return res;
-});
+}) as GroupByEveryNFn;

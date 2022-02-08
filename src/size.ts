@@ -1,9 +1,10 @@
-import { isObj } from './isObj';
+import { isObject } from './isObject';
+import { isStr } from './isStr';
 
-export const size = (data: unknown) => {
-  if (!isObj(data) && typeof data !== 'string') {
+export const size = (val: unknown): number => {
+  if (!isObject(val) && !isStr(val)) {
     return 0;
   }
 
-  return (data as any).length;
+  return Object.keys(val).length;
 };

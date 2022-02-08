@@ -1,33 +1,32 @@
 import { curry } from './curry';
 import { Fn } from './types';
 
+interface DebounceFn {
+  (a: number): <T extends unknown[], R extends unknown>(f: Fn<T, R>) => Fn<T, R>;
+  <T extends unknown[], R extends unknown>(a: number, f: Fn<T, R>): Fn<T, R>;
+}
+
 /**
  * TODO: adicionar documentação
  *
  * https://davidwalsh.name/function-debounce
  */
-export const debounce = curry(function <T extends any[], R>(
-  wait: number,
-  func: Fn<T, R>,
-): Fn<T, R> {
-  let timeout: NodeJS.Timeout;
+export const debounce = curry((wait: number, fn: Function) => {
+  let timeout: any;
 
-  return function (...args: T) {
-    // @ts-ignore
-    // eslint-disable-next-line consistent-this
+  return function (this: any, ...args: any[]) {
     const self = this;
 
     const later = function () {
-      // @ts-ignore
       timeout = undefined;
-      func.apply(self, args);
+      fn.apply(self, args);
     };
 
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
 
     if (!timeout) {
-      func.apply(self, args);
+      fn.apply(self, args);
     }
-  } as Fn<T, R>;
-});
+  };
+}) as DebounceFn;

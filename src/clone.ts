@@ -1,4 +1,4 @@
-import { isObj } from './isObj';
+import { isObject } from './isObject';
 
 /**
  * http://documentcloud.github.io/underscore-contrib/#snapshot
@@ -6,7 +6,7 @@ import { isObj } from './isObj';
  * TODO: adicionar documentação
  */
 export function clone<T extends object>(data: T): T {
-  if (!isObj(data)) {
+  if (!isObject(data)) {
     return data;
   }
 

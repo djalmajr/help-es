@@ -23,7 +23,7 @@ export type SameLength<T extends any[]> = Extract<{ [K in keyof T]: any }, any[]
  * const toSquare = pow(2);
  * console.log(toSquare(9)) // logs 81
  */
-export function curry<A extends any[], R>(fn: Fn<A, R>): Curried<A, R> {
+export function curry<A extends unknown[], R>(fn: Fn<A, R>): Curried<A, R> {
   return function (...args: any[]): any {
     return args.length < fn.length ? curry((fn as any).bind(null, ...args)) : fn(...(args as any));
   };
