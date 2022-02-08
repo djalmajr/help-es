@@ -32,6 +32,7 @@ export * from './pick';
 export * from './set';
 export * from './size';
 export * from './sortBy';
+export * from './template';
 export * from './times';
 export * from './uniq';
 export * from './uniqBy';
