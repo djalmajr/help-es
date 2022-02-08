@@ -34,7 +34,6 @@ export * from './size';
 export * from './sortBy';
 export * from './template';
 export * from './times';
-export * from './types';
 export * from './uniq';
 export * from './uniqBy';
 export * from './uniqWith';
