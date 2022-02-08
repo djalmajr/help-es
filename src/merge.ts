@@ -1,13 +1,16 @@
 import { curry } from './curry';
 import { isObj } from './isObj';
-import { Obj } from './types';
+import { Spread } from './types';
 
 const getCtor = (v: any) => v.constructor;
 
-export const merge = curry(<T = Obj>(target: T, source: T): T => {
-  for (const [k, val] of Object.entries(source)) {
-    const key = k as keyof T;
+export interface MergeFn {
+  <A extends object>(a: A): <B extends object>(b: B) => Spread<[A, B]>;
+  <A extends object, B extends object>(a: A, b: B): Spread<[A, B]>;
+}
 
+export const merge = curry((target: any, source: any) => {
+  for (const [key, val] of Object.entries(source)) {
     if (isObj(val)) {
       if (target[key] === void 0 || getCtor(target[key]) !== getCtor(val)) {
         target[key] = new (val as any).constructor();
@@ -20,4 +23,4 @@ export const merge = curry(<T = Obj>(target: T, source: T): T => {
   }
 
   return target;
-});
+}) as MergeFn;

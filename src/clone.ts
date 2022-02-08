@@ -1,12 +1,11 @@
 import { isObj } from './isObj';
-import { Obj } from './types';
 
 /**
  * http://documentcloud.github.io/underscore-contrib/#snapshot
  *
  * TODO: adicionar documentação
  */
-export function clone<T extends Obj>(data: T): T {
+export function clone<T extends object>(data: T): T {
   if (!isObj(data)) {
     return data;
   }
@@ -15,7 +14,7 @@ export function clone<T extends Obj>(data: T): T {
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
-      res[key] = clone(data[key]);
+      res[key] = clone(data[key] as any);
     }
   }
 

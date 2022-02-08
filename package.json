@@ -1,5 +1,5 @@
 {
-  "name": "@djalmajr/help-es",
+  "name": "help-es",
   "version": "0.1.0",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "license": "SEE LICENSE IN LICENSE FILE",
@@ -31,16 +31,13 @@
       "require": "./dist/*/*.js"
     }
   },
-  "publishConfig": {
-    "@djalmajr:registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "build": "node ./scripts/build.mjs minify=true && npm run build:types",
     "build:dev": "node ./scripts/build.mjs watch=true",
     "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts dist",
     "prettier:check": "prettier --check src/**/*.{ts,tsx}",
     "prettier:fix": "prettier --write src/**/*.{ts,tsx}",
-    "postversion": "git push && git push --tags",
+    "postversion": "git push && git push --tags && npm publish",
     "test": "exit 0",
     "version": "npm run build"
   },

@@ -1,8 +1,7 @@
 import { clone } from './clone';
 import { curry } from './curry';
-import { merge } from './merge';
-import { Obj } from './types';
+import { merge, MergeFn } from './merge';
 
-export const assign = curry(<T extends Obj>(target: T, source: T): T => {
+export const assign = curry((target: any, source: any) => {
   return merge(clone(target), source);
-});
+}) as MergeFn;
