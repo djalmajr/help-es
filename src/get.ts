@@ -2,7 +2,7 @@ import { curry } from './curry';
 import { isStr } from './isStr';
 
 interface GetFn {
-  (a: string | string[]): <R extends unknown>(b: object) => R;
+  <R extends unknown>(a: string | string[]): (b: object) => R;
   <R extends unknown>(a: string | string[], b: object): R;
 }
 
