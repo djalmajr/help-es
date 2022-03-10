@@ -10,7 +10,7 @@ interface FnTemplate {
 }
 
 export const template: FnTemplate = curry((str: string, obj: any) => {
-  return str.replace(regex, (_, k) => get(k, obj) || '');
+  return str.replace(regex, (_, k) => get(k, obj) ?? '');
 }) as FnTemplate;
 
 template.test = (str: string) => regex.test(str);
