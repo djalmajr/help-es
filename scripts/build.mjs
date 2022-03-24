@@ -31,12 +31,12 @@ Object.entries(formats).forEach(([ext, fmt]) => {
     plugins: [
       globPlugin(),
       {
-        name: 'add-mjs',
+        name: 'add-ext',
         setup(build) {
           build.onResolve({ filter: /.*/ }, (args) => {
             if (args.importer) {
               return {
-                path: args.path + '.js',
+                path: args.path + ext,
                 external: true,
               };
             }
