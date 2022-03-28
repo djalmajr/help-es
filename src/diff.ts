@@ -5,6 +5,6 @@ interface DiffFn {
   <A extends unknown[], B extends unknown[]>(a: A, b: B): [...A, ...B];
 }
 
-export const diff = curry((a: any[], b: any[]) => {
+export const diff = curry((a: never[], b: never[]) => {
   return [a, b].reduce((c, d) => c.filter((e) => !d.includes(e)));
 }) as DiffFn;

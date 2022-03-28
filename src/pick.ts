@@ -1,4 +1,5 @@
 import { curry } from './curry';
+import { Obj } from './types';
 
 export interface PickFn {
   (a: string | string[]): <B extends object>(b: B) => Partial<B>;
@@ -8,7 +9,7 @@ export interface PickFn {
 /**
  * TODO: adicionar documentação
  */
-export const pick = curry((path: string | string[], obj: any) => {
+export const pick = curry((path: string | string[], obj: Obj) => {
   const keys = ([] as string[]).concat(path);
 
   return keys.reduce(function (res, key) {
@@ -17,5 +18,5 @@ export const pick = curry((path: string | string[], obj: any) => {
     }
 
     return res;
-  }, {} as any);
+  }, {} as Obj);
 }) as PickFn;

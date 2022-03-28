@@ -2,8 +2,8 @@ import { curry } from './curry';
 import { isStr } from './isStr';
 
 interface GetFn {
-  <R extends unknown>(a: string | string[]): (b: object) => R;
-  <R extends unknown>(a: string | string[], b: object): R;
+  <R = unknown>(a: string | string[]): (b: object) => R;
+  <R = unknown>(a: string | string[], b: object): R;
 }
 
 /**
@@ -11,12 +11,12 @@ interface GetFn {
  *
  * TODO: adicionar documentação
  */
-export const get = curry((path: string | string[], src: object): unknown => {
-  isStr(path) && (path = path.split('.'));
+export const get = curry((path: string | string[], data: never): unknown => {
+  isStr(path) && (path = path.split(/[\]\.\[]/).filter(Boolean));
 
-  for (let i = 0, l = path.length; i < l; i++) {
-    src = src ? (src as any)[path[i]] : undefined;
+  for (let i = 0; i < path.length; i++) {
+    data = data?.[path[i]];
   }
 
-  return src;
+  return data;
 }) as GetFn;

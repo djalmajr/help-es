@@ -9,6 +9,6 @@ interface SortByFn {
 /**
  * TODO: adicionar documentação
  */
-export const sortBy = curry((k: string, a: any, b: any) => {
+export const sortBy = curry((k: string, a: never, b: never) => {
   return (a[k] > b[k] && 1) || (a[k] < b[k] && -1) || 0;
 }) as SortByFn;

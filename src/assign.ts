@@ -2,8 +2,6 @@ import { clone } from './clone';
 import { curry } from './curry';
 import { merge, MergeFn } from './merge';
 
-interface AssignFn extends MergeFn {}
-
-export const assign = curry((target: any, source: any) => {
+export const assign = curry((target: never, source: never) => {
   return merge(clone(target), source);
-}) as AssignFn;
+}) as MergeFn;

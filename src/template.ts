@@ -9,7 +9,7 @@ interface FnTemplate {
   test(str: string): boolean;
 }
 
-export const template: FnTemplate = curry((str: string, obj: any) => {
+export const template: FnTemplate = curry((str: string, obj: never) => {
   return str.replace(regex, (_, k) => get(k, obj) ?? '');
 }) as FnTemplate;
 

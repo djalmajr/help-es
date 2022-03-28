@@ -2,8 +2,8 @@ import { curry } from './curry';
 import { Fn } from './types';
 
 interface DebounceFn {
-  (a: number): <T extends unknown[], R extends unknown>(f: Fn<T, R>) => Fn<T, R>;
-  <T extends unknown[], R extends unknown>(a: number, f: Fn<T, R>): Fn<T, R>;
+  (a: number): <T extends unknown[], R = unknown>(f: Fn<T, R>) => Fn<T, R>;
+  <T extends unknown[], R = unknown>(a: number, f: Fn<T, R>): Fn<T, R>;
 }
 
 /**
@@ -11,22 +11,21 @@ interface DebounceFn {
  *
  * https://davidwalsh.name/function-debounce
  */
-export const debounce = curry((wait: number, fn: Function) => {
-  let timeout: any;
+export const debounce = curry((wait: number, fn: Fn<unknown[], unknown>) => {
+  let timeout: NodeJS.Timeout | void;
 
-  return function (this: any, ...args: any[]) {
-    const self = this;
-
-    const later = function () {
+  return function (this: unknown, ...args: unknown[]) {
+    const later = () => {
       timeout = undefined;
-      fn.apply(self, args);
+      fn.apply(this, args);
     };
 
-    clearTimeout(timeout);
+    clearTimeout(timeout as NodeJS.Timeout);
+
     timeout = setTimeout(later, wait);
 
     if (!timeout) {
-      fn.apply(self, args);
+      fn.apply(this, args);
     }
   };
 }) as DebounceFn;

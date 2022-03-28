@@ -1,4 +1,11 @@
-root: true
-extends: @react-native-community
+parser: "@typescript-eslint/parser"
+env:
+  browser: true
+extends:
+  - "plugin:@typescript-eslint/eslint-recommended"
+  - "plugin:@typescript-eslint/recommended"
+plugins:
+  - "@typescript-eslint"
+  - "prettier"
 rules:
   no-sequences: off

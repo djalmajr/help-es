@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { curry } from './curry';
 import { isObject } from './isObject';
 import { Spread } from './types';
@@ -9,7 +11,7 @@ export interface MergeFn {
   <A extends object, B extends object>(a: A, b: B): Spread<[A, B]>;
 }
 
-export const merge = curry((target: any, source: any) => {
+export const merge = curry((target: any, source: never) => {
   for (const [key, val] of Object.entries(source)) {
     if (isObject(val)) {
       if (target[key] === void 0 || getCtor(target[key]) !== getCtor(val)) {

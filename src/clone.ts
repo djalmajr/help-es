@@ -10,11 +10,12 @@ export function clone<T extends object>(data: T): T {
     return data;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const res = new (data as any).constructor();
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
-      res[key] = clone(data[key] as any);
+      res[key] = clone(data[key] as never);
     }
   }
 
