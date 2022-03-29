@@ -1,18 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Any, Fn } from './types';
 
-import { Fn } from './types';
-
-export type Curried<A extends any[], R> = <P extends Partial<A>>(
+export type Curried<A extends Any[], R> = <P extends Partial<A>>(
   ...args: P
 ) => P extends A
   ? R
   : A extends [...SameLength<P>, ...infer S]
-  ? S extends any[]
+  ? S extends Any[]
     ? Curried<S, R>
     : never
   : never;
 
-export type SameLength<T extends any[]> = Extract<{ [K in keyof T]: any }, any[]>;
+export type SameLength<T extends Any[]> = Extract<{ [K in keyof T]: Any }, Any[]>;
 
 export const __ = Symbol('help-es');
 
@@ -25,7 +23,7 @@ const cat = (prev: unknown[], next: unknown[]) => {
 };
 
 /**
- * Curry a function by N arguments.
+ * curry.
  *
  * https://stackoverflow.com/a/63905763/2528550
  *
@@ -36,11 +34,11 @@ const cat = (prev: unknown[], next: unknown[]) => {
  * console.log(toSquare(9)) // logs 81
  */
 export function curry<A extends unknown[], R>(fn: Fn<A, R>): Curried<A, R> {
-  return function curried(...args: any[]): any {
+  return function curried(...args: Any[]): Any {
     if (args.some((a) => a === __) || args.length < fn.length) {
       return (...next: unknown[]) => curried(...cat(args, next));
     }
 
-    return fn(...(args as any));
+    return fn(...(args as Any));
   };
 }
