@@ -5,7 +5,6 @@ import { isStr } from './isStr';
 import { Obj } from './types';
 
 interface SetFn {
-  (path: string | string[]): <B extends object>(value: unknown) => (source: B) => B;
   (path: string | string[]): <B extends object>(value: unknown, source: B) => B;
   <B extends object>(path: string | string[], value: unknown): (source: B) => B;
   <B extends object>(path: string | string[], value: unknown, source: B): B;
