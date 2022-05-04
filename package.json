@@ -3,9 +3,9 @@
   "version": "0.3.1",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "license": "SEE LICENSE IN LICENSE FILE",
-  "main": "dist/index.js",
-  "module": "dist/index.m.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
   "homepage": "https://github.com/djalmajr/help-es#README",
   "repository": {
     "type": "git",
@@ -15,31 +15,30 @@
     "url": "https://github.com/djalmajr/help-es/issues"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "browser": "./dist/index.m.js",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "types": "./lib/index.d.ts",
+      "browser": "./lib/index.mjs",
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.js"
     },
     "./*": {
-      "types": "./dist/*/*.d.ts",
-      "browser": "./dist/*/*.m.js",
-      "import": "./dist/*/*.mjs",
-      "require": "./dist/*/*.js"
+      "types": "./lib/*.d.ts",
+      "browser": "./lib/*.mjs",
+      "import": "./lib/*.mjs",
+      "require": "./lib/*.js"
     }
   },
   "scripts": {
-    "build": "node ./scripts/build.mjs minify=true && npm run build:types",
-    "build:dev": "node ./scripts/build.mjs watch=true",
-    "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts dist",
-    "prettier:check": "prettier --check src/**/*.{ts,tsx}",
-    "prettier:fix": "prettier --write src/**/*.{ts,tsx}",
+    "build": "bin/build.mjs minify=true && npm run build:types",
+    "build:dev": "bin/build.mjs watch=true",
+    "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts lib",
+    "prettier": "prettier --write src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish",
     "test": "exit 0",
-    "version": "npm run build"
+    "version": "prettier && npm run build"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

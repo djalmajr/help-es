@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import esbuild from 'esbuild';
 import { globPlugin } from 'esbuild-plugin-glob';
 
@@ -14,7 +16,6 @@ const options = args.reduce((res, arg) => {
 const formats = {
   '.js': 'cjs',
   '.mjs': 'esm',
-  '.m.js': 'esm',
 };
 
 Object.entries(formats).forEach(([ext, fmt]) => {
@@ -26,7 +27,7 @@ Object.entries(formats).forEach(([ext, fmt]) => {
     bundle: true,
     format: fmt,
     outbase: 'src',
-    outdir: 'dist',
+    outdir: 'lib',
     outExtension: { '.js': ext },
     plugins: [
       globPlugin(),
