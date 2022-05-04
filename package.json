@@ -1,6 +1,6 @@
 {
   "name": "help-es",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "license": "SEE LICENSE IN LICENSE FILE",
   "main": "lib/index.js",
@@ -38,7 +38,7 @@
     "prettier": "prettier --write src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish",
     "test": "exit 0",
-    "version": "prettier && npm run build"
+    "version": "npm run prettier && npm run build"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",
