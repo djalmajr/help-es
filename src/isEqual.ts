@@ -4,7 +4,7 @@ import { size } from './size';
 
 const { keys } = Object;
 
-export const isEqual = curry((source: never, target: never): boolean => {
+export const isEqual = curry((source: unknown, target: unknown): boolean => {
   if (!isObject(source) || !isObject(target)) {
     return source === target;
   }
@@ -14,10 +14,13 @@ export const isEqual = curry((source: never, target: never): boolean => {
   }
 
   return keys(source).every((key: string): boolean => {
-    if (isObject(source[key]) && isObject(target[key])) {
-      return isEqual(source[key], target[key]);
+    if (
+      isObject(source[key as keyof typeof source]) &&
+      isObject(target[key as keyof typeof target])
+    ) {
+      return isEqual(source[key as keyof typeof source], target[key as keyof typeof target]);
     }
 
-    return source[key] === target[key];
+    return source[key as keyof typeof source] === target[key as keyof typeof target];
   });
 });
