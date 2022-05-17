@@ -34,7 +34,7 @@
   "scripts": {
     "build": "bin/build.mjs minify=true && npm run build:types",
     "build:dev": "bin/build.mjs watch=true",
-    "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts lib",
+    "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts lib && echo \"export * from './types';\" >> lib/index.d.ts",
     "prettier": "prettier --write src/**/*.ts",
     "postversion": "git push && git push --tags && npm publish",
     "test": "exit 0",
