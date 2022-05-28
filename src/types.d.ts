@@ -1,10 +1,26 @@
 export declare type Any = any; // eslint-disable-line
 
+export declare type PropKey = number | string;
+
 export declare type Fn<A extends unknown[], R> = (...args: A) => R;
 
-export declare type Obj<T = unknown> = Record<string, T>;
+export declare type Obj<T = Any> = Record<PropKey, T>;
 
 export declare type ValueOf<T> = T[keyof T];
+
+export declare type Constructor<T> = new (...args: Any[]) => T;
+
+export declare type SameLength<T extends Any[]> = Extract<{ [K in keyof T]: Any }, Any[]>;
+
+export declare type Curried<A extends Any[], R> = <P extends Partial<A>>(
+  ...args: P
+) => P extends A
+  ? R
+  : A extends [...SameLength<P>, ...infer S]
+  ? S extends Any[]
+    ? Curried<S, R>
+    : never
+  : never;
 
 export declare type Head<T extends Any[]> = T extends [Any, ...Any[]] ? T[0] : never;
 
