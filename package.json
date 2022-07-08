@@ -32,12 +32,15 @@
     }
   },
   "scripts": {
-    "build": "bin/build.mjs minify=true && npm run build:types",
     "build:dev": "bin/build.mjs watch=true",
     "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts lib && echo \"export * from './types';\" >> lib/index.d.ts",
-    "prettier": "prettier --write src/**/*.ts",
+    "build": "bin/build.mjs minify=true && npm run build:types",
     "postversion": "git push && git push --tags && npm publish",
-    "test": "exit 0",
+    "prebuild": "npm run test",
+    "prettier": "prettier --write src/**/*.ts",
+    "test:prettier": "prettier --check src/**/*.ts",
+    "test:ts": "tsc --noEmit",
+    "test": "npm run test:ts && npm run test:prettier",
     "version": "npm run prettier && npm run build"
   },
   "devDependencies": {

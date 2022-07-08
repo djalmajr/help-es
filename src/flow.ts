@@ -1,5 +1,6 @@
 import { Fn } from './types';
 
-export function flow<R = unknown>(...fns: Fn<unknown[], unknown>[]) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function flow<R = unknown>(...fns: Fn<[...any], unknown>[]) {
   return (x: unknown) => fns.reduce((y, f) => f(y), x) as R;
 }

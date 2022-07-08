@@ -1,5 +1,4 @@
 import { isObject } from './isObject';
-import { Any } from './types';
 
 /**
  * http://documentcloud.github.io/underscore-contrib/#snapshot
@@ -11,7 +10,7 @@ export function clone<T extends object>(data: T): T {
     return data;
   }
 
-  const res = new (data as Any).constructor();
+  const res = new (data as any).constructor(); // eslint-disable-line
 
   for (const key in data) {
     if (data.hasOwnProperty(key)) {

@@ -12,7 +12,7 @@ export interface PickFn {
 export const pick = curry((path: string | string[], obj: Obj) => {
   const keys = ([] as string[]).concat(path);
 
-  return keys.reduce(function (res, key) {
+  return keys.reduce((res, key) => {
     if (obj.hasOwnProperty(key)) {
       res[key] = obj[key];
     }
