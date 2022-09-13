@@ -1,19 +1,25 @@
+import { isString } from './isString';
 import { parseJSON } from './parseJSON';
-import { Obj, ValueOf } from './types';
+import { ValueOf } from './types';
 
-type Cache<T> = T & {
-  get<R = unknown>(key: ValueOf<T>): R | null;
-  set(key: ValueOf<T>, value: unknown): void;
-};
+export function createCache<T extends object>(nameOrInit?: string | T, init?: T) {
+  if (isString(nameOrInit)) {
+    nameOrInit = `${nameOrInit}:`;
+  } else {
+    init = nameOrInit;
+    nameOrInit = '';
+  }
 
-export function createCache<T extends Obj<string>>(init?: T): Cache<T> {
   return {
     ...init,
-    get<R = unknown>(key: ValueOf<T>): R | null {
-      return parseJSON(localStorage.getItem((key as unknown as string) || ''));
+    del(key: keyof T): void {
+      localStorage.removeItem(nameOrInit + (key as never));
     },
-    set(key: ValueOf<T>, value: unknown): void {
-      localStorage.setItem(key as unknown as string, JSON.stringify(value));
+    get<R = ValueOf<T>>(key: keyof T): R | null {
+      return parseJSON(localStorage.getItem(nameOrInit + (key as never) || ''));
     },
-  } as Cache<T>;
+    set(key: keyof T, value: ValueOf<T>): void {
+      localStorage.setItem(nameOrInit + (key as never), JSON.stringify(value));
+    },
+  };
 }

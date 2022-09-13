@@ -7,9 +7,9 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": ["dom", "es2017"],
-    "module": "es2015",
-    "moduleResolution": "node",
+    "lib": ["DOM", "ES2017"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
@@ -22,7 +22,7 @@
     "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "es2017"
+    "target": "ES2020"
   },
   "exclude": ["./lib", "./node_modules"]
 }

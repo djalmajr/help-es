@@ -3,6 +3,6 @@ import { Obj } from './types';
 /**
  * TODO: adicionar documentação
  */
-export function obj2arr<T extends Obj>(obj: T): [keyof T, T][] {
-  return Object.entries(obj).map(([k, v]) => [k, v]) as [keyof T, T][];
+export function obj2arr<T extends Obj<unknown>>(value: T): [keyof T, T][] {
+  return Object.entries(value).map(([k, v]) => [k, v]) as [keyof T, T][];
 }

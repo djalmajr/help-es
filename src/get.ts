@@ -1,5 +1,5 @@
 import { curry } from './curry';
-import { isStr } from './isStr';
+import { isString } from './isString';
 
 interface GetFn {
   <R = unknown>(a: string | string[]): (b: object) => R;
@@ -12,7 +12,7 @@ interface GetFn {
  * TODO: adicionar documentação
  */
 export const get = curry((path: string | string[], data: never): unknown => {
-  isStr(path) && (path = path.split(/[\]\.\[]/).filter(Boolean));
+  isString(path) && (path = path.split(/[\]\.\[]/).filter(Boolean));
 
   for (let i = 0; i < path.length; i++) {
     data = data?.[path[i]];

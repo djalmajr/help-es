@@ -1,5 +1,5 @@
 import { curry } from './curry';
-import { Fn } from './types';
+import type { Fn } from './types';
 
 interface UniqWithFn {
   <T extends object>(fn: Fn<T[], boolean>): (b: T[]) => T[];

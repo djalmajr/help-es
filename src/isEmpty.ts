@@ -1,12 +1,21 @@
-import { isObject } from './isObject';
+import { typeOf } from './typeOf';
 
 /**
  * TODO: adicionar documentação
  */
-export function isEmpty(val: unknown): boolean {
-  if (isObject(val)) {
-    return !Object.keys(val).length;
+export function isEmpty(value: unknown): boolean {
+  switch (typeOf(value)) {
+    case 'array':
+    case 'object':
+      return !Object.keys(value as object).length;
+
+    case 'map':
+    case 'set':
+      return !(value as Set<never>).size;
+
+    case 'string':
+      return !(value as string).trim().length;
   }
 
-  return !val;
+  return !value;
 }

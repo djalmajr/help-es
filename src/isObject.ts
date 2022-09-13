@@ -1,3 +1,5 @@
-export function isObject(a: unknown): a is object {
-  return typeof a === 'object' && a !== null;
+import { typeOf } from './typeOf';
+
+export function isObject<T = object>(value: unknown): value is T {
+  return ['array', 'object'].includes(typeOf(value));
 }

@@ -1,5 +1,5 @@
 import { curry } from './curry';
-import { Fn } from './types';
+import type { Fn } from './types';
 
 interface DebounceFn {
   (a: number): <T extends unknown[], R = unknown>(f: Fn<T, R>) => Fn<T, R>;

@@ -1,12 +1,15 @@
 import { curry } from './curry';
-import { diff } from './diff';
-import { pick, PickFn } from './pick';
+import { PickFn } from './pick';
 
 /**
  * TODO: adicionar documentação
  */
-export const omit = curry((path: string | string[], obj: never) => {
-  const arr = ([] as string[]).concat(path);
+export const omit = curry((path: string | string[], value: object) => {
+  const keys = ([] as string[]).concat(path);
 
-  return pick(diff(Object.keys(obj), arr), obj);
+  return Object.keys(value).reduce((r, k) => {
+    const v = value[k as keyof typeof value];
+
+    return keys.includes(k) || v === undefined ? r : { ...r, [k]: v };
+  }, {});
 }) as PickFn;

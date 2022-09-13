@@ -1,4 +1,4 @@
-import { Fn } from './types';
+import type { Fn } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function flow<R = unknown>(...fns: Fn<[...any], unknown>[]) {

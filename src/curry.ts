@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Curried, Fn } from './types';
+import type { Curried, Fn } from './types';
 
 export const __ = Symbol('help-es');
 

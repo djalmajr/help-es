@@ -1,12 +1,12 @@
 import { curry } from './curry';
 import { latinize } from './latinize';
-import type { Obj } from './types';
+import { Obj } from './types';
 
-export const filterBy = curry((key: string, search: string, val: Obj) => {
+export const filterBy = curry((key: string, search: string, value: Obj<unknown>) => {
   const query = latinize(search).toLowerCase().trim();
 
   return query
-    ? latinize(val[key] as string)
+    ? latinize(value[key] as string)
         .toLowerCase()
         .includes(query)
     : true;
