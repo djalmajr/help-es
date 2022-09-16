@@ -1,6 +1,6 @@
 {
   "name": "help-es",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "license": "SEE LICENSE IN LICENSE FILE",
   "main": "lib/index.js",
