@@ -18,6 +18,6 @@ export const unsubscribe = (key: string, fn: Callback) => {
   subscriptions[key] = subscriptions[key].filter((f: Callback) => f !== fn);
 };
 
-export const publish = (key: string, data: Obj<unknown> = {}) => {
-  subscriptions[key]?.forEach((fn) => fn(data));
+export const publish = (key: string, ...args: unknown[]) => {
+  subscriptions[key]?.forEach((fn) => fn(...args));
 };
