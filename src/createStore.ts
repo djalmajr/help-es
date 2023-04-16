@@ -1,27 +1,29 @@
+import { createEmitter } from './createEmitter';
 import { isFunction } from './isFunction';
 import { isObject } from './isObject';
+import { omit } from './omit';
 import { Obj } from './types';
 
-function handler(callback: Function) {
-  return {
-    get(obj: Obj, key: string) {
-      if (key === '_isProxy') return true;
-      const d = Object.getOwnPropertyDescriptor(obj, key);
-      const ok = isObject(obj[key]) && !obj[key]._isProxy && d?.writable;
-      ok && (obj[key] = new Proxy(obj[key], handler(callback)));
-      return obj[key];
-    },
-    set(obj: Obj, key: string, val: unknown) {
-      if (obj[key] !== val) (obj[key] = val), callback(obj);
-      return true;
-    },
-    deleteProperty(obj: Obj, key: string) {
-      delete obj[key];
-      callback(obj);
-      return true;
-    },
-  };
-}
+const { emit, on } = createEmitter();
+
+const handler = () => ({
+  get(obj: Obj, key: string) {
+    if (key === '_isProxy') return true;
+    const d = Object.getOwnPropertyDescriptor(obj, key);
+    const nok = isObject(obj[key]) && !obj[key]._isProxy && d?.writable;
+    nok && (obj[key] = new Proxy(obj[key], handler()));
+    return obj[key];
+  },
+  set(obj: Obj, key: string, val: unknown) {
+    if (obj[key] !== val) (obj[key] = val), emit('update');
+    return true;
+  },
+  deleteProperty(obj: Obj, key: string) {
+    delete obj[key];
+    emit('update');
+    return true;
+  },
+});
 
 export function createStore<T = Obj>(init: T): T & { subscribe(fn: (s: T) => void): () => never } {
   const fns = <Function[]>[];
@@ -34,14 +36,12 @@ export function createStore<T = Obj>(init: T): T & { subscribe(fn: (s: T) => voi
   };
 
   let nextTickId = 0;
-  const store = new Proxy(
-    Object.assign(init as never, { subscribe }),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    handler(({ subscribe, ...data }: Obj) => {
-      if (nextTickId) cancelAnimationFrame(nextTickId);
-      nextTickId = requestAnimationFrame(() => fns.forEach((fn) => fn(data)));
-    }),
-  );
+  const store = new Proxy(Object.assign(init as never, { subscribe }), handler());
+  on('update', () => {
+    const data = omit('subscribe', store);
+    if (nextTickId) cancelAnimationFrame(nextTickId);
+    nextTickId = requestAnimationFrame(() => fns.forEach((fn) => fn(data)));
+  });
 
   for (const prop in init) {
     const d = Object.getOwnPropertyDescriptor(init, prop);
