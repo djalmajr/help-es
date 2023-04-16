@@ -8,6 +8,7 @@ const getOptions = assign({
 });
 
 const parseURL = (slug: string, baseURL = '') => {
+  // prettier-ignore
   return slug.match(/^(https?)?:?\/\//)
     ? slug
     : `${baseURL}/${slug.replace(/^\//, '')}`;
@@ -15,10 +16,11 @@ const parseURL = (slug: string, baseURL = '') => {
 
 type AjaxOptions = {
   baseURL?: string;
-}
+};
 
 export const createAjax = (opts: AjaxOptions = {}) => ({
   options: {
+    // prettier-ignore
     baseURL: opts.baseURL || (() => {
       try {
         return location.origin;

@@ -3,6 +3,7 @@
   "version": "0.9.0",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "description": "Helper functions for JavaScript language",
+  "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "homepage": "https://github.com/djalmajr/help-es#README",
