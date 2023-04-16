@@ -22,6 +22,7 @@ export * from './flow';
 export * from './formatCurrency';
 export * from './formatPhone';
 export * from './get';
+export * from './groupBy';
 export * from './groupByEveryN';
 export * from './includes';
 export * from './isArray';
