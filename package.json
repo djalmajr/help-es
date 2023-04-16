@@ -2,9 +2,8 @@
   "name": "help-es",
   "version": "0.9.0",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
-  "license": "SEE LICENSE IN LICENSE FILE",
+  "description": "Helper functions for JavaScript language",
   "main": "lib/index.js",
-  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
   "homepage": "https://github.com/djalmajr/help-es#README",
   "repository": {
@@ -20,21 +19,22 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "browser": "./lib/index.mjs",
-      "import": "./lib/index.mjs",
+      "browser": "./lib/index.js",
+      "import": "./lib/index.js",
       "require": "./lib/index.js"
     },
     "./*": {
       "types": "./lib/*.d.ts",
-      "browser": "./lib/*.mjs",
-      "import": "./lib/*.mjs",
+      "browser": "./lib/*.js",
+      "import": "./lib/*.js",
       "require": "./lib/*.js"
     }
   },
   "scripts": {
-    "build:dev": "bin/build.mjs watch=true",
+    "build-dev": "node bin/build.js watch=true",
+    "build-only": "node bin/build.js",
     "build:types": "tsc --emitDeclarationOnly && cp src/types.d.ts lib && echo \"export * from './types';\" >> lib/index.d.ts",
-    "build": "bin/build.mjs minify=true && npm run build:types",
+    "build": "node bin/build.js minify=true && npm run build:types",
     "postversion": "git push && git push --tags && npm publish",
     "prebuild": "npm run test",
     "prettier": "prettier --write src/**/*.ts",

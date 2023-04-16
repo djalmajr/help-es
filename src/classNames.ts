@@ -7,6 +7,5 @@ export function classNames(...args: unknown[]) {
     .join(' ')
     .split(/\r\n|\n|\r|\s+/)
     .filter(Boolean);
-
   return uniq(cnames).join(' ');
 }

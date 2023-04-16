@@ -1,8 +1,6 @@
 export function isURL(str: string): boolean {
   try {
-    const { protocol } = new URL(str);
-
-    return protocol === 'http:' || protocol === 'https:';
+    return /^https?/.test(new URL(str).protocol);
   } catch (o_O) {
     return false;
   }
