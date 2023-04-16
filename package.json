@@ -44,6 +44,9 @@
     "test": "npm run test:ts && npm run test:prettier",
     "version": "npm run prettier && npm run build"
   },
+  "dependencies": {
+    "matercolors": "^2.3.0"
+  },
   "devDependencies": {
     "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.17.0",

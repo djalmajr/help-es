@@ -8,4 +8,5 @@ plugins:
   - "@typescript-eslint"
   - "prettier"
 rules:
+  @typescript-eslint/ban-types: off
   no-sequences: off

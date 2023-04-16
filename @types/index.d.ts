@@ -1,3 +1,5 @@
+declare module 'matercolors';
+
 interface Document {
   adoptedStyleSheets: any[];
 }
