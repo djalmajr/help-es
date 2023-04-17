@@ -22,13 +22,13 @@
       "types": "./lib/index.d.ts",
       "browser": "./lib/index.js",
       "import": "./lib/index.js",
-      "require": "./lib/index.js"
+      "require": "./lib/index.cjs"
     },
     "./*": {
       "types": "./lib/*.d.ts",
       "browser": "./lib/*.js",
       "import": "./lib/*.js",
-      "require": "./lib/*.js"
+      "require": "./lib/*.cjs"
     }
   },
   "scripts": {
