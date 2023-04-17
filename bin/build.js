@@ -28,7 +28,7 @@ Object.entries(formats).forEach(([ext, fmt]) => {
         name: 'add-ext',
         setup(build) {
           build.onResolve({ filter: /.*/ }, (args) => {
-            if (args.importer) {
+            if (args.importer && args.path.includes('./')) {
               return { path: args.path + ext, external: true };
             }
           });
