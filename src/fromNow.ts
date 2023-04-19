@@ -163,9 +163,8 @@ const translates: Obj = {
  * Human readable elapsed or remaining time (example: 3 minutes ago)
  * @author github.com/victornpb
  * @see https://stackoverflow.com/a/67338038/938822
- * @param  {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
- * @param  {Date|Number|String} [nowDate] A Date object, timestamp or string parsable with Date.parse()
- * @param  {Intl.RelativeTimeFormat} [lang] Language to format the relative date
+ * @param {string} [lang] Language to format the relative date
+ * @param {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
  * @return {string} Human readable elapsed or remaining time
  */
 function fromNowIntl(lang: string, date: Date | number | string) {
@@ -187,10 +186,11 @@ function fromNowIntl(lang: string, date: Date | number | string) {
 
 /**
  * Human readable elapsed or remaining time (example: 3 minutes ago)
- * @param  {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
- * @return {string} Human readable elapsed or remaining time
  * @author github.com/victornpb
  * @see https://stackoverflow.com/a/67338038/938822
+ * @param {string} [lang] Language to format the relative date
+ * @param {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
+ * @return {string} Human readable elapsed or remaining time
  */
 function fromNowAlt(lang: string, date: Date | number | string) {
   const units = [
