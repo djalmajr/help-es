@@ -1,4 +1,3 @@
-import { set } from './set';
 import { Obj } from './types';
 
 const prefix = 'δ';
@@ -23,9 +22,9 @@ export function html(strings: string[], ...values: unknown[]) {
     if (node.nodeType === Node.ELEMENT_NODE) {
       const attrs = node.getAttributeNames().filter((n) => hasPfx(node.getAttribute(n)!));
       for (attr of attrs) {
-        if (attr[0] === "@") set(`on${attr.slice(1)}`, values[idx++], node);
+        if (attr[0] === "@") (node as Obj)[`on${attr.slice(1)}`] = values[idx++];
         else if (attr[0] === "?") node.toggleAttribute(attr.slice(1), !!values[idx++]);
-        else if (attr[0] === ".") set(attr.slice(1), values[idx++], node);
+        else if (attr[0] === ".") (node as Obj)[attr.slice(1)] = values[idx++];
         else { node.setAttribute(attr, values[idx++] as never); continue; } // prettier-ignore
         node.removeAttribute(attr);
       }
