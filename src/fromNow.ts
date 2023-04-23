@@ -1,4 +1,5 @@
 import { curry } from './curry';
+import { parseDate } from './parseDate';
 import { Obj } from './types';
 
 interface Interval {
@@ -164,12 +165,12 @@ const translates: Obj = {
  * @author github.com/victornpb
  * @see https://stackoverflow.com/a/67338038/938822
  * @param {string} [lang] Language to format the relative date
- * @param {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
+ * @param {Date|string} date A Date object, timestamp or string parsable with Date.parse()
  * @return {string} Human readable elapsed or remaining time
  */
-function fromNowIntl(lang: string, date: Date | number | string) {
+function fromNowIntl(lang: string, date: Date | string) {
   const now = new Date(Date.now()).getTime();
-  const diff = now - new Date(date).getTime();
+  const diff = now - (parseDate(date) || new Date()).getTime();
   const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
 
   for (const interval of intervals) {
@@ -189,10 +190,10 @@ function fromNowIntl(lang: string, date: Date | number | string) {
  * @author github.com/victornpb
  * @see https://stackoverflow.com/a/67338038/938822
  * @param {string} [lang] Language to format the relative date
- * @param {Date|Number|String} date A Date object, timestamp or string parsable with Date.parse()
+ * @param {Date|string} date A Date object, timestamp or string parsable with Date.parse()
  * @return {string} Human readable elapsed or remaining time
  */
-function fromNowAlt(lang: string, date: Date | number | string) {
+function fromNowAlt(lang: string, date: Date | string) {
   const units = [
     { ...translates[lang].recent, max: 30 * SECOND, divisor: 1 },
     { ...translates[lang].second, max: MINUTE, divisor: SECOND },
@@ -205,7 +206,7 @@ function fromNowAlt(lang: string, date: Date | number | string) {
     { ...translates[lang].century, max: 1000 * YEAR, divisor: 100 * YEAR },
     { ...translates[lang].millenium, max: Infinity, divisor: 1000 * YEAR },
   ];
-  const diff = Date.now() - new Date(date).getTime();
+  const diff = Date.now() - (parseDate(date) || new Date()).getTime();
   const diffAbs = Math.abs(diff);
   for (const unit of units) {
     if (diffAbs < unit.max) {
@@ -217,7 +218,7 @@ function fromNowAlt(lang: string, date: Date | number | string) {
   }
 }
 
-export const fromNow = curry((lang: string, date: Date | number | string) => {
+export const fromNow = curry((lang: string, date: Date | string) => {
   try {
     new Intl.RelativeTimeFormat(lang);
     return fromNowIntl(lang, date);
