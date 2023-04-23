@@ -44,6 +44,7 @@ export * from './not';
 export * from './obj2arr';
 export * from './omit';
 export * from './parseCurrency';
+export * from './parseDate';
 export * from './parseJSON';
 export * from './parseJWT';
 export * from './pascalCase';

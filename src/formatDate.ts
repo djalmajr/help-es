@@ -1,7 +1,9 @@
 import { curry } from './curry';
+import { parseDate } from './parseDate';
 
-export const createDateFormatter = curry((locale: string, date: Date | string) => {
-  return date ? new Intl.DateTimeFormat(locale).format(new Date(date)) : null;
+export const createDateFormatter = curry((locale: string, value: Date | string) => {
+  const date = parseDate(value);
+  return date ? new Intl.DateTimeFormat(locale).format(date) : value;
 });
 
 export const formatBRDate = createDateFormatter('pt-BR');
