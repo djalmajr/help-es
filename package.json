@@ -1,6 +1,6 @@
 {
   "name": "help-es",
-  "version": "0.15.6",
+  "version": "0.15.7",
   "author": "Djalma Jr. <djalmajr@gmail.com>",
   "description": "Helper functions for JavaScript language",
   "type": "module",
