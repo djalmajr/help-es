@@ -1,4 +1,5 @@
 import { curry } from './curry';
+import { get } from './get';
 
 interface SortByFn {
   <T extends object>(key: keyof T): (b: T, c: T) => number;
@@ -10,5 +11,6 @@ interface SortByFn {
  * TODO: adicionar documentação
  */
 export const sortBy = curry(function <T extends object>(k: keyof T, a: T, b: T) {
-  return (a[k] > b[k] && 1) || (a[k] < b[k] && -1) || 0;
+  const v = get<T>(k as string);
+  return (v(a) > v(b) && 1) || (v(a) < v(b) && -1) || 0;
 }) as SortByFn;
