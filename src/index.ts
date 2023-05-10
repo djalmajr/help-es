@@ -49,6 +49,7 @@ export * from './parseJSON';
 export * from './parseJWT';
 export * from './pascalCase';
 export * from './pick';
+export * from './pluralize';
 export * from './promisify';
 export * from './random';
 export * from './set';
