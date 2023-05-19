@@ -31,7 +31,12 @@ function handler() {
   };
 }
 
-export function createStore<T extends object>(data: T): Store<T> {
+type Options = {
+  immediate?: boolean;
+};
+
+export function createStore<T extends object>(data: T, opts?: Options): Store<T> {
+  const { immediate } = opts || {};
   const fns = <Function[]>[];
   const init = clone(data);
 
@@ -49,6 +54,7 @@ export function createStore<T extends object>(data: T): Store<T> {
   const store = new Proxy(init, handler());
   on('update', () => {
     const data = omit('subscribe', store);
+    if (immediate) return fns.forEach((fn) => fn(data));
     if (nextTickId) cancelAnimationFrame(nextTickId);
     nextTickId = requestAnimationFrame(() => fns.forEach((fn) => fn(data)));
   });
