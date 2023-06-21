@@ -3,6 +3,7 @@ import { createEmitter } from './createEmitter';
 import { isFunction } from './isFunction';
 import { isObject } from './isObject';
 import { omit } from './omit';
+import { guid } from './random';
 import { Obj } from './types';
 
 type Store<T> = T & { subscribe(fn: (s: T) => void): () => never };
@@ -10,22 +11,22 @@ type Store<T> = T & { subscribe(fn: (s: T) => void): () => never };
 const { emit, on } = createEmitter();
 const { defineProperty, getOwnPropertyDescriptor } = Object;
 
-function handler(uuid: string) {
+function handler(uid: string) {
   return {
     get(obj: Obj, key: string) {
       if (key === '_isProxy') return true;
       const d = getOwnPropertyDescriptor(obj, key);
       const nok = isObject(obj[key]) && !obj[key]._isProxy && d?.writable;
-      nok && (obj[key] = new Proxy(obj[key], handler(uuid)));
+      nok && (obj[key] = new Proxy(obj[key], handler(uid)));
       return obj[key];
     },
     set(obj: Obj, key: string, val: unknown) {
-      if (obj[key] !== val) (obj[key] = val), emit(`update:${uuid}`);
+      if (obj[key] !== val) (obj[key] = val), emit(`update:${uid}`);
       return true;
     },
     deleteProperty(obj: Obj, key: string) {
       delete obj[key];
-      emit(`update:${uuid}`);
+      emit(`update:${uid}`);
       return true;
     },
   };
@@ -39,7 +40,7 @@ export function createStore<T extends object>(data: T, opts?: Options): Store<T>
   const { immediate } = opts || {};
   const fns = <Function[]>[];
   const init = clone(data);
-  const uuid = crypto.randomUUID();
+  const uid = guid();
 
   defineProperty(init, 'subscribe', {
     value(fn: Function) {
@@ -52,8 +53,8 @@ export function createStore<T extends object>(data: T, opts?: Options): Store<T>
   });
 
   let nextTickId = 0;
-  const store = new Proxy(init, handler(uuid));
-  on(`update:${uuid}`, () => {
+  const store = new Proxy(init, handler(uid));
+  on(`update:${uid}`, () => {
     const data = omit('subscribe', store);
     if (immediate) return fns.forEach((fn) => fn(data));
     if (nextTickId) cancelAnimationFrame(nextTickId);
