@@ -12,7 +12,7 @@ export * from './copy';
 export * from './createAjax';
 export * from './createCache';
 export * from './createEmitter';
-export * from './createStore';
+export * from './createState';
 export * from './curry';
 export * from './debounce';
 export * from './diff';
