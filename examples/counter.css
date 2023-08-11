@@ -1,0 +1,26 @@
+.counter {
+  align-items: center;
+  display: flex;
+  padding: 1rem;
+}
+
+.counter span,
+.counter button {
+  font-size: 200%;
+}
+
+.counter span {
+  display: inline-block;
+  margin: auto 0.5rem;
+  min-width: 4rem;
+  text-align: center;
+}
+
+.counter button {
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  border-radius: 10px;
+  background-color: seagreen;
+  color: white;
+}

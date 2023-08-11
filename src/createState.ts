@@ -1,12 +1,12 @@
+import { bind } from './bind';
 import { clone } from './clone';
 import { createEmitter } from './createEmitter';
-import { isFunction } from './isFunction';
 import { isObject } from './isObject';
 import { omit } from './omit';
 import { guid } from './random';
 import { Obj } from './types';
 
-type Store<T> = T & {
+type State<T> = T & {
   dispose(fn: (s: T) => void): void;
   observe(fn: (s: T) => void): () => void;
 };
@@ -39,7 +39,7 @@ type Options = {
   immediate?: boolean;
 };
 
-export function createState<T extends object>(data?: T, opts?: Options): Store<T> {
+export function createState<T extends object>(data?: T, opts?: Options): State<T> {
   const { immediate } = opts || {};
   const fns = <Function[]>[];
   const init = clone(data || {}) as Obj;
@@ -60,26 +60,13 @@ export function createState<T extends object>(data?: T, opts?: Options): Store<T
   });
 
   let nextTickId = 0;
-  const store = new Proxy(init, handler(uid));
+  const state = new Proxy(init, handler(uid));
   on(`update:${uid}`, () => {
-    const data = omit(['dispose', 'observe'], store);
+    const data = omit(['dispose', 'observe'], state);
     if (immediate) return fns.forEach((fn) => fn(data));
     if (nextTickId) cancelAnimationFrame(nextTickId);
     nextTickId = requestAnimationFrame(() => fns.forEach((fn) => fn(data)));
   });
 
-  for (const prop in init) {
-    const d = getOwnPropertyDescriptor(init, prop);
-    if (d?.get && d?.configurable) {
-      defineProperty(init, prop, {
-        get: d.get.bind(store),
-      });
-    } else if (isFunction(init[prop])) {
-      defineProperty(init, prop, {
-        value: (init[prop] as any).bind(store),
-      });
-    }
-  }
-
-  return store as Store<T>;
+  return bind(state);
 }
