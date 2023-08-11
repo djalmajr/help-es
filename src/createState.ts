@@ -67,6 +67,7 @@ export function createState<T extends object>(data?: T, opts?: Options): State<T
     if (nextTickId) cancelAnimationFrame(nextTickId);
     nextTickId = requestAnimationFrame(() => fns.forEach((fn) => fn(data)));
   });
+  emit(`update:${uid}`);
 
   return bind(state);
 }

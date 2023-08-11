@@ -19,6 +19,4 @@ function App() {
   `;
 }
 
-const update = () => render(document.body, App());
-store.observe(update);
-update();
+store.observe(() => render(document.body, App()));
