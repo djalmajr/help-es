@@ -2,6 +2,7 @@ export * from './arr2obj';
 export * from './asObject';
 export * from './assign';
 export * from './bind';
+export * from './bindAll';
 export * from './camelCase';
 export * from './classNames';
 export * from './cleanCRLF';

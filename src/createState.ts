@@ -1,4 +1,4 @@
-import { bind } from './bind';
+import { bindAll } from './bindAll';
 import { clone } from './clone';
 import { createEmitter } from './createEmitter';
 import { isObject } from './isObject';
@@ -69,5 +69,5 @@ export function createState<T extends object>(data?: T, opts?: Options): State<T
   });
   emit(`update:${uid}`);
 
-  return bind(state);
+  return bindAll(state) as State<T>;
 }
