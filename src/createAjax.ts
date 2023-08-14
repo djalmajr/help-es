@@ -8,14 +8,15 @@ const getOptions = assign({
 });
 
 const parseURL = (slug: string, baseURL = '') => {
-  // prettier-ignore
-  return slug.match(/^(https?)?:?\/\//)
-    ? slug
-    : `${baseURL}/${slug.replace(/^\//, '')}`;
+  return slug.match(/^(https?)?:?\/\//) ? slug : `${baseURL}/${slug.replace(/^\//, '')}`;
 };
 
 type AjaxOptions = {
   baseURL?: string;
+};
+
+type RequestOptions = RequestInit & {
+  raw?: boolean;
 };
 
 export const createAjax = (opts: AjaxOptions = {}) => ({
@@ -31,56 +32,50 @@ export const createAjax = (opts: AjaxOptions = {}) => ({
     token: '',
   },
 
-  async request<T = unknown>(slug: string, options: RequestInit = {}): Promise<T> {
-    const opts = getOptions(options);
+  async request<T = unknown>(slug: string, options: RequestOptions = {}): Promise<T> {
+    const cfg = getOptions(options);
     const url = parseURL(slug, this.options.baseURL);
 
     if (this.options.token) {
-      merge(opts.headers, { Authorization: `Bearer ${this.options.token}` });
+      merge(cfg.headers, { Authorization: `Bearer ${this.options.token}` });
     }
 
-    if (!(opts.body instanceof FormData)) {
-      switch ((<never>opts.headers)['Content-Type']) {
+    if (!(cfg.body instanceof FormData)) {
+      switch ((<never>cfg.headers)['Content-Type']) {
         case 'application/x-www-form-urlencoded':
-          opts.body = new URLSearchParams(<never>opts.body);
+          cfg.body = new URLSearchParams(<never>cfg.body);
           break;
         default:
-          merge(opts.headers, { 'Content-Type': 'application/json' });
-          opts.body = JSON.stringify(opts.body);
+          merge(cfg.headers, { 'Content-Type': 'application/json' });
+          cfg.body = JSON.stringify(cfg.body);
           break;
       }
     }
 
-    const res = await fetch(url, opts);
-    if (res.status < 200 || res.status >= 300) {
-      throw res;
-    }
+    const res = await fetch(url, cfg);
+    if (cfg.raw) return <never>res;
+    if (res.status < 200 || res.status >= 300) throw res;
 
-    const ctype = res.headers.get('Content-Type');
-    if (ctype?.includes('application/json')) {
-      return await res.json();
-    }
-
-    if (ctype?.includes('application/octet-stream')) {
-      return <never>await res.arrayBuffer();
-    }
-
+    const type = res.headers.get('Content-Type');
+    if (/application\/json/.test(type!)) return await res.json();
+    if (/application\/octet-stream/.test(type!)) return <never>await res.arrayBuffer();
+    if (/(application|audio|image|video)\//.test(type!)) return <never>await res.blob();
     return <never>await res.text();
   },
 
-  get<T = unknown>(url: string, options?: RequestInit): Promise<T> {
+  get<T = unknown>(url: string, options?: RequestOptions): Promise<T> {
     return this.request(url, { ...options, method: 'get' });
   },
 
-  post<T = unknown>(url: string, data: unknown, options?: RequestInit): Promise<T> {
+  post<T = unknown>(url: string, data: unknown, options?: RequestOptions): Promise<T> {
     return this.request(url, { ...options, method: 'post', body: <never>data });
   },
 
-  put<T = unknown>(url: string, data: unknown, options?: RequestInit): Promise<T> {
+  put<T = unknown>(url: string, data: unknown, options?: RequestOptions): Promise<T> {
     return this.request(url, { ...options, method: 'put', body: <never>data });
   },
 
-  delete<T = unknown>(url: string, options?: RequestInit): Promise<T> {
+  delete<T = unknown>(url: string, options?: RequestOptions): Promise<T> {
     return this.request(url, { ...options, method: 'delete' });
   },
 });
