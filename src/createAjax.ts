@@ -1,11 +1,6 @@
-import { assign } from './assign';
 import { merge } from './merge';
-
-const getOptions = assign({
-  headers: {
-    Accept: '*/*',
-  },
-});
+import { omit } from './omit';
+import { set } from './set';
 
 const parseURL = (slug: string, baseURL = '') => {
   return slug.match(/^(https?)?:?\/\//) ? slug : `${baseURL}/${slug.replace(/^\//, '')}`;
@@ -13,6 +8,7 @@ const parseURL = (slug: string, baseURL = '') => {
 
 type AjaxOptions = {
   baseURL?: string;
+  token?: string;
 };
 
 type RequestOptions = RequestInit & {
@@ -21,39 +17,35 @@ type RequestOptions = RequestInit & {
 
 export const createAjax = (opts: AjaxOptions = {}) => ({
   options: {
-    // prettier-ignore
-    baseURL: opts.baseURL || (() => {
+    baseURL: (() => {
       try {
-        return location.origin;
+        return opts.baseURL || location.origin;
       } catch (err) {
         return '/';
       }
     })(),
-    token: '',
-  },
+  } as RequestInit & AjaxOptions,
 
-  async request<T = unknown>(slug: string, options: RequestOptions = {}): Promise<T> {
-    const cfg = getOptions(options);
-    const url = parseURL(slug, this.options.baseURL);
+  async request<T = unknown>(slug: string, { raw, ...init }: RequestOptions = {}): Promise<T> {
+    const token = this.options.token?.trim();
+    token && merge(init, set('headers.Authorization', `Bearer ${token}`, {}));
+    merge(init, set('headers.Accept', '*/*', {}));
+    merge(init, omit(['baseURL', 'token'], this.options));
 
-    if (this.options.token) {
-      merge(cfg.headers, { Authorization: `Bearer ${this.options.token}` });
-    }
-
-    if (!(cfg.body instanceof FormData)) {
-      switch ((<never>cfg.headers)['Content-Type']) {
+    if (!(init.body instanceof FormData)) {
+      switch ((<never>init.headers)['Content-Type']) {
         case 'application/x-www-form-urlencoded':
-          cfg.body = new URLSearchParams(<never>cfg.body);
+          init.body = new URLSearchParams(<never>init.body);
           break;
         default:
-          merge(cfg.headers, { 'Content-Type': 'application/json' });
-          cfg.body = JSON.stringify(cfg.body);
+          merge(init, set('headers.Content-Type', 'application/json', {}));
+          init.body = JSON.stringify(init.body);
           break;
       }
     }
 
-    const res = await fetch(url, cfg);
-    if (cfg.raw) return <never>res;
+    const res = await fetch(parseURL(slug, this.options.baseURL), init);
+    if (raw) return <never>res;
     if (res.status < 200 || res.status >= 300) throw res;
 
     const type = res.headers.get('Content-Type');
