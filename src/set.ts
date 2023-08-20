@@ -20,7 +20,7 @@ export const set = curry((path: any, value: any, source: any) => {
     // prettier-ignore
     val = val[path[i]] = i === path.length - 1
       ? typeof value === 'function' ? value(val[path[i]]) : value
-      : val[path[i]] ? copy(val[path[i]]) : path[i+1]*0 === 0 && [] || {};
+      : val[path[i]] ? copy(val[path[i]]) : path[i+1]*0 === 0 ? [] : {};
   }
   return src;
 }) as SetFn;
