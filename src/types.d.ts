@@ -8,6 +8,11 @@ export declare type ValueOf<T> = T[keyof T];
 
 export declare type Constructor<T> = new (...args: Any[]) => T;
 
+// https://dev.to/pffigueiredo/typescript-utility-keyof-nested-object-2pa3
+export declare type KeyOf<T extends object> = {
+  [K in keyof T & (string | number)]: T[K] extends object ? `${K}` | `${K}.${KeyOf<T[K]>}` : `${K}`;
+}[keyof T & (string | number)];
+
 /******************************************************************************/
 
 export declare type SameLength<T extends Any[]> = Extract<{ [K in keyof T]: Any }, Any[]>;
