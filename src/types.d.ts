@@ -4,14 +4,16 @@ export declare type Fn<A extends unknown[], R> = (...args: A) => R;
 
 export declare type Obj<T = Any> = Record<PropertyKey, T>;
 
-export declare type ValueOf<T> = T[keyof T];
-
 export declare type Constructor<T> = new (...args: Any[]) => T;
 
-// https://dev.to/pffigueiredo/typescript-utility-keyof-nested-object-2pa3
-export declare type KeyOf<T extends object> = {
-  [K in keyof T & (string | number)]: T[K] extends object ? `${K}` | `${K}.${KeyOf<T[K]>}` : `${K}`;
-}[keyof T & (string | number)];
+// https://dev.to/dzey/comment/268bd
+export declare type KeyOf<T, K = keyof T> = K extends keyof T & (string | number)
+  ? `${K}` | (T[K] extends object ? `${K}.${KeyOf<T[K]>}` : never)
+  : never;
+
+export declare type ValueOf<T, K = keyof T> = K extends keyof T & (string | number)
+  ? T[K] | (T[K] extends object ? ValueOf<T[K]> : never)
+  : never;
 
 /******************************************************************************/
 
