@@ -2,7 +2,7 @@ const isFrag = (n: Node) => {
   return [Node.DOCUMENT_FRAGMENT_NODE, Node.DOCUMENT_NODE].includes(n.nodeType as never);
 };
 
-export function css(arr: string[], ...val: unknown[]) {
+export function css(arr: TemplateStringsArray, ...val: unknown[]) {
   const sheet = new CSSStyleSheet();
   sheet.replaceSync(val.reduce((r: string, v, i) => r + v + arr[i + 1], arr[0]) as string);
   return sheet;
